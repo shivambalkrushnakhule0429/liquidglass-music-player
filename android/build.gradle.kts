@@ -19,6 +19,19 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+subprojects {
+    afterEvaluate {
+        if (project.hasProperty("android")) {
+            val android = project.extensions.getByName("android") as? com.android.build.gradle.BaseExtension
+            android?.let {
+                if (it.namespace == null) {
+                    it.namespace = "com.aura.music.${project.name.replace(":", ".").replace("-", ".")}"
+                }
+            }
+        }
+    }
+}
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
