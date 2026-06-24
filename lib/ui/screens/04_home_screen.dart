@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '05_songs_tab_screen.dart';
 import '06_albums_tab_screen.dart';
+import '07_artists_tab_screen.dart';
+import '08_playlists_tab_screen.dart';
 import '../widgets/player/mini_player.dart';
 import '../widgets/glass/glass_panel.dart';
 import '../../core/constants/app_colors.dart';
@@ -19,8 +21,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final List<Widget> _tabs = [
     const SongsTabScreen(),
     const AlbumsTabScreen(),
-    const Center(child: Text("Artists", style: TextStyle(color: Colors.white))),
-    const Center(child: Text("Playlists", style: TextStyle(color: Colors.white))),
+    const ArtistsTabScreen(),
+    const PlaylistsTabScreen(),
   ];
 
   @override
