@@ -8,8 +8,11 @@ import '../ui/screens/10_search_screen.dart';
 import '../ui/screens/12_album_detail_screen.dart';
 import '../ui/screens/13_artist_detail_screen.dart';
 import '../ui/screens/14_playlist_detail_screen.dart';
+import '../ui/screens/15_create_playlist_screen.dart';
 import '../ui/screens/16_favorites_screen.dart';
+import '../ui/screens/17_recently_played_screen.dart';
 import '../ui/screens/19_equalizer_screen.dart';
+import '../ui/screens/20_sleep_timer_screen.dart';
 import '../ui/screens/21_settings_screen.dart';
 import '../ui/screens/22_about_screen.dart';
 
@@ -59,12 +62,24 @@ final goRouter = GoRouter(
       ),
     ),
     GoRoute(
+      path: '/playlist/create',
+      builder: (context, state) => const CreatePlaylistScreen(),
+    ),
+    GoRoute(
       path: '/favorites',
       builder: (context, state) => const FavoritesScreen(),
     ),
     GoRoute(
+      path: '/recent',
+      builder: (context, state) => const RecentlyPlayedScreen(),
+    ),
+    GoRoute(
       path: '/equalizer',
       builder: (context, state) => const EqualizerScreen(),
+    ),
+    GoRoute(
+      path: '/sleep-timer',
+      builder: (context, state) => const SleepTimerScreen(),
     ),
     GoRoute(
       path: '/settings',
