@@ -11,6 +11,7 @@ import '../../../state/notifiers/player_state.dart';
 import '../widgets/glass/glass_panel.dart';
 import '../widgets/glass/glass_slider.dart';
 import '../screens/18_queue_screen.dart';
+import '../screens/25_share_sheet.dart';
 
 class NowPlayingScreen extends ConsumerWidget {
   const NowPlayingScreen({super.key});
@@ -214,10 +215,13 @@ class NowPlayingScreen extends ConsumerWidget {
                   // Volume Slider
                   Row(
                     children: [
-                      const Icon(
-                        Icons.volume_down,
-                        color: Colors.white60,
-                        size: 20,
+                      IconButton(
+                        icon: Icon(
+                          playerState.isMuted ? Icons.volume_off : Icons.volume_down,
+                          color: playerState.isMuted ? Colors.redAccent : Colors.white60,
+                          size: 20,
+                        ),
+                        onPressed: () => ref.read(playerNotifierProvider.notifier).toggleMute(),
                       ),
                       Expanded(
                         child: GlassSlider(
@@ -242,11 +246,14 @@ class NowPlayingScreen extends ConsumerWidget {
                       _buildActionButton(context, Icons.timer, "Timer", () => context.push('/sleep-timer')),
                       _buildActionButton(context, Icons.equalizer, "EQ", () => context.push('/equalizer')),
                       _buildActionButton(context, Icons.share, "Share", () {
-                         // Share logic could be a sheet too
+                         showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) => ShareSheet(song: song),
+                         );
                       }),
-                      _buildActionButton(context, Icons.speed, "Speed", () {
-                         final currentSpeed = 1.0; // Mock current speed
-                         ref.read(playerNotifierProvider.notifier).setSpeed(1.5); // Cycle speeds
+                      _buildActionButton(context, Icons.speed, "${playerState.speed}x", () {
+                         _showSpeedSheet(context, ref);
                       }),
                     ],
                   ),
@@ -256,6 +263,30 @@ class NowPlayingScreen extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showSpeedSheet(BuildContext context, WidgetRef ref) {
+     showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => GlassPanel(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text("Playback Speed", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 16),
+            ...[0.5, 1.0, 1.5, 2.0].map((s) => ListTile(
+              title: Text("${s}x", style: const TextStyle(color: Colors.white)),
+              onTap: () {
+                ref.read(playerNotifierProvider.notifier).setSpeed(s);
+                Navigator.pop(context);
+              },
+            )),
+          ],
+        ),
       ),
     );
   }

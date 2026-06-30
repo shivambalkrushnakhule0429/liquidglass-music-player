@@ -58,6 +58,7 @@ class AudioPlayerService {
   Stream<Duration?> get durationStream => _player.durationStream;
   Stream<PlayerState> get playerStateStream => _player.playerStateStream;
   Stream<bool> get playingStream => _player.playingStream;
+  Stream<int?> get currentIndexStream => _player.currentIndexStream;
 
   Duration get position => _player.position;
   Duration? get duration => _player.duration;

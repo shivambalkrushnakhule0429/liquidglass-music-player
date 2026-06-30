@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../widgets/glass/glass_panel.dart';
 import '../widgets/glass/glass_slider.dart';
+import '../../state/notifiers/equalizer_notifier.dart';
 
-class EqualizerScreen extends StatelessWidget {
+class EqualizerScreen extends ConsumerWidget {
   const EqualizerScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final eqState = ref.watch(equalizerNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Equalizer", style: TextStyle(color: Colors.white)),
@@ -28,12 +32,20 @@ class EqualizerScreen extends StatelessWidget {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(5, (index) => _buildEQBand(index)),
+                children: List.generate(5, (index) => _buildEQBand(ref, index, eqState.bandLevels[index])),
               ),
               const SizedBox(height: 48),
-              _buildSliderSetting("Bass Boost"),
+              _buildSliderSetting(
+                "Bass Boost",
+                eqState.bassBoost,
+                (v) => ref.read(equalizerNotifierProvider.notifier).setBassBoost(v),
+              ),
               const SizedBox(height: 24),
-              _buildSliderSetting("Virtualizer"),
+              _buildSliderSetting(
+                "Virtualizer",
+                eqState.virtualizer,
+                (v) => ref.read(equalizerNotifierProvider.notifier).setVirtualizer(v),
+              ),
             ],
           ),
         ),
@@ -41,7 +53,7 @@ class EqualizerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEQBand(int index) {
+  Widget _buildEQBand(WidgetRef ref, int index, double value) {
     return Column(
       children: [
         Container(
@@ -51,22 +63,21 @@ class EqualizerScreen extends StatelessWidget {
             color: Colors.white.withOpacity(0.05),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                height: 100, // Mock level
-                width: 40,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [AppColors.primaryAccent, AppColors.secondaryAccent],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
+          child: RotatedBox(
+            quarterTurns: 3,
+            child: SliderTheme(
+              data: SliderThemeData(
+                trackHeight: 40,
+                thumbShape: SliderComponentShape.noThumb,
+                overlayShape: SliderComponentShape.noOverlay,
+                activeTrackColor: AppColors.primaryAccent.withOpacity(0.5),
+                inactiveTrackColor: Colors.transparent,
               ),
-            ],
+              child: Slider(
+                value: value,
+                onChanged: (v) => ref.read(equalizerNotifierProvider.notifier).setBandLevel(index, v),
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 8),
@@ -75,13 +86,13 @@ class EqualizerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSliderSetting(String label) {
+  Widget _buildSliderSetting(String label, double value, ValueChanged<double> onChanged) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
-        GlassSlider(value: 0.5, onChanged: (v) {}),
+        GlassSlider(value: value, onChanged: onChanged),
       ],
     );
   }

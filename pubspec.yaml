@@ -50,6 +50,7 @@ dependencies:
   # Icons & Assets
   google_fonts: ^8.1.0
   cupertino_icons: ^1.0.8
+  share_plus: ^13.2.0
 
 dev_dependencies:
   flutter_test:

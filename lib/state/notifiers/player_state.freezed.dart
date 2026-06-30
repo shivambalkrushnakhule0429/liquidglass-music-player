@@ -25,6 +25,9 @@ mixin _$PlayerState {
   bool get shuffleEnabled => throw _privateConstructorUsedError;
   RepeatMode get repeatMode => throw _privateConstructorUsedError;
   double get volume => throw _privateConstructorUsedError;
+  double get previousVolume => throw _privateConstructorUsedError;
+  bool get isMuted => throw _privateConstructorUsedError;
+  double get speed => throw _privateConstructorUsedError;
   Color? get accentColor => throw _privateConstructorUsedError;
   String? get albumArtUri => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
@@ -51,6 +54,9 @@ abstract class $PlayerStateCopyWith<$Res> {
       bool shuffleEnabled,
       RepeatMode repeatMode,
       double volume,
+      double previousVolume,
+      bool isMuted,
+      double speed,
       Color? accentColor,
       String? albumArtUri,
       bool isLoading,
@@ -81,6 +87,9 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
     Object? shuffleEnabled = null,
     Object? repeatMode = null,
     Object? volume = null,
+    Object? previousVolume = null,
+    Object? isMuted = null,
+    Object? speed = null,
     Object? accentColor = freezed,
     Object? albumArtUri = freezed,
     Object? isLoading = null,
@@ -122,6 +131,18 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
       volume: null == volume
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
+              as double,
+      previousVolume: null == previousVolume
+          ? _value.previousVolume
+          : previousVolume // ignore: cast_nullable_to_non_nullable
+              as double,
+      isMuted: null == isMuted
+          ? _value.isMuted
+          : isMuted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      speed: null == speed
+          ? _value.speed
+          : speed // ignore: cast_nullable_to_non_nullable
               as double,
       accentColor: freezed == accentColor
           ? _value.accentColor
@@ -173,6 +194,9 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
       bool shuffleEnabled,
       RepeatMode repeatMode,
       double volume,
+      double previousVolume,
+      bool isMuted,
+      double speed,
       Color? accentColor,
       String? albumArtUri,
       bool isLoading,
@@ -202,6 +226,9 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
     Object? shuffleEnabled = null,
     Object? repeatMode = null,
     Object? volume = null,
+    Object? previousVolume = null,
+    Object? isMuted = null,
+    Object? speed = null,
     Object? accentColor = freezed,
     Object? albumArtUri = freezed,
     Object? isLoading = null,
@@ -244,6 +271,18 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
               as double,
+      previousVolume: null == previousVolume
+          ? _value.previousVolume
+          : previousVolume // ignore: cast_nullable_to_non_nullable
+              as double,
+      isMuted: null == isMuted
+          ? _value.isMuted
+          : isMuted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      speed: null == speed
+          ? _value.speed
+          : speed // ignore: cast_nullable_to_non_nullable
+              as double,
       accentColor: freezed == accentColor
           ? _value.accentColor
           : accentColor // ignore: cast_nullable_to_non_nullable
@@ -277,6 +316,9 @@ class _$PlayerStateImpl implements _PlayerState {
       this.shuffleEnabled = false,
       this.repeatMode = RepeatMode.off,
       this.volume = 1.0,
+      this.previousVolume = 1.0,
+      this.isMuted = false,
+      this.speed = 1.0,
       this.accentColor,
       this.albumArtUri,
       this.isLoading = false,
@@ -316,6 +358,15 @@ class _$PlayerStateImpl implements _PlayerState {
   @JsonKey()
   final double volume;
   @override
+  @JsonKey()
+  final double previousVolume;
+  @override
+  @JsonKey()
+  final bool isMuted;
+  @override
+  @JsonKey()
+  final double speed;
+  @override
   final Color? accentColor;
   @override
   final String? albumArtUri;
@@ -327,7 +378,7 @@ class _$PlayerStateImpl implements _PlayerState {
 
   @override
   String toString() {
-    return 'PlayerState(currentSong: $currentSong, queue: $queue, currentIndex: $currentIndex, position: $position, duration: $duration, playbackState: $playbackState, shuffleEnabled: $shuffleEnabled, repeatMode: $repeatMode, volume: $volume, accentColor: $accentColor, albumArtUri: $albumArtUri, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'PlayerState(currentSong: $currentSong, queue: $queue, currentIndex: $currentIndex, position: $position, duration: $duration, playbackState: $playbackState, shuffleEnabled: $shuffleEnabled, repeatMode: $repeatMode, volume: $volume, previousVolume: $previousVolume, isMuted: $isMuted, speed: $speed, accentColor: $accentColor, albumArtUri: $albumArtUri, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -351,6 +402,10 @@ class _$PlayerStateImpl implements _PlayerState {
             (identical(other.repeatMode, repeatMode) ||
                 other.repeatMode == repeatMode) &&
             (identical(other.volume, volume) || other.volume == volume) &&
+            (identical(other.previousVolume, previousVolume) ||
+                other.previousVolume == previousVolume) &&
+            (identical(other.isMuted, isMuted) || other.isMuted == isMuted) &&
+            (identical(other.speed, speed) || other.speed == speed) &&
             (identical(other.accentColor, accentColor) ||
                 other.accentColor == accentColor) &&
             (identical(other.albumArtUri, albumArtUri) ||
@@ -373,6 +428,9 @@ class _$PlayerStateImpl implements _PlayerState {
       shuffleEnabled,
       repeatMode,
       volume,
+      previousVolume,
+      isMuted,
+      speed,
       accentColor,
       albumArtUri,
       isLoading,
@@ -396,6 +454,9 @@ abstract class _PlayerState implements PlayerState {
       final bool shuffleEnabled,
       final RepeatMode repeatMode,
       final double volume,
+      final double previousVolume,
+      final bool isMuted,
+      final double speed,
       final Color? accentColor,
       final String? albumArtUri,
       final bool isLoading,
@@ -419,6 +480,12 @@ abstract class _PlayerState implements PlayerState {
   RepeatMode get repeatMode;
   @override
   double get volume;
+  @override
+  double get previousVolume;
+  @override
+  bool get isMuted;
+  @override
+  double get speed;
   @override
   Color? get accentColor;
   @override

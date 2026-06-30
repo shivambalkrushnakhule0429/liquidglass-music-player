@@ -25,6 +25,17 @@ class PlayerNotifier extends _$PlayerNotifier {
       }
     });
 
+    // Index listener for auto-updates
+    final indexSub = playerService.currentIndexStream.listen((index) {
+       if (index != null && state.queue.isNotEmpty && index < state.queue.length) {
+         final currentSong = state.queue[index];
+         if (currentSong.id != state.currentSong?.id) {
+            state = state.copyWith(currentSong: currentSong, currentIndex: index);
+            _updateAccentColor(currentSong.id);
+         }
+       }
+    });
+
     // Player state listener
     final stateSub = playerService.playerStateStream.listen((jaState) {
        PlaybackState pbState;
@@ -43,23 +54,13 @@ class PlayerNotifier extends _$PlayerNotifier {
            pbState = PlaybackState.completed;
            break;
        }
-
-       // Handle song change from queue
-       final currentIndex = ref.read(audioPlayerServiceProvider).currentIndex;
-       if (currentIndex != null && state.queue.isNotEmpty && currentIndex < state.queue.length) {
-         final currentSong = state.queue[currentIndex];
-         if (currentSong.id != state.currentSong?.id) {
-            state = state.copyWith(currentSong: currentSong, currentIndex: currentIndex);
-            _updateAccentColor(currentSong.id);
-         }
-       }
-
        state = state.copyWith(playbackState: pbState);
     });
 
     ref.onDispose(() {
       posSub.cancel();
       durSub.cancel();
+      indexSub.cancel();
       stateSub.cancel();
     });
 
@@ -113,11 +114,23 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> setVolume(double volume) async {
-    state = state.copyWith(volume: volume);
+    state = state.copyWith(volume: volume, isMuted: volume == 0);
     await ref.read(audioPlayerServiceProvider).setVolume(volume);
   }
 
+  Future<void> toggleMute() async {
+    if (state.isMuted) {
+      final newVolume = state.previousVolume > 0 ? state.previousVolume : 1.0;
+      state = state.copyWith(isMuted: false, volume: newVolume);
+      await ref.read(audioPlayerServiceProvider).setVolume(newVolume);
+    } else {
+      state = state.copyWith(isMuted: true, previousVolume: state.volume, volume: 0);
+      await ref.read(audioPlayerServiceProvider).setVolume(0);
+    }
+  }
+
   Future<void> setSpeed(double speed) async {
+    state = state.copyWith(speed: speed);
     await ref.read(audioPlayerServiceProvider).setSpeed(speed);
   }
 }

@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player_notifier.dart';
+part of 'equalizer_notifier.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerNotifierHash() => r'48170f07c8d83a0dac5f23bee2ebf2cc0fb711e6';
+String _$equalizerNotifierHash() => r'd7d0398e76e8f6d3de44fe971c2e3eef0191a0e8';
 
-/// See also [PlayerNotifier].
-@ProviderFor(PlayerNotifier)
-final playerNotifierProvider =
-    AutoDisposeNotifierProvider<PlayerNotifier, PlayerState>.internal(
-  PlayerNotifier.new,
-  name: r'playerNotifierProvider',
+/// See also [EqualizerNotifier].
+@ProviderFor(EqualizerNotifier)
+final equalizerNotifierProvider =
+    AutoDisposeNotifierProvider<EqualizerNotifier, EqualizerState>.internal(
+  EqualizerNotifier.new,
+  name: r'equalizerNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$playerNotifierHash,
+      : _$equalizerNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PlayerNotifier = AutoDisposeNotifier<PlayerState>;
+typedef _$EqualizerNotifier = AutoDisposeNotifier<EqualizerState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
