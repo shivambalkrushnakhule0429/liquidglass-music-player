@@ -1,5 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:audio_session/audio_session.dart';
 import '../models/song_model.dart';
 
 class AudioPlayerService {
@@ -17,10 +18,8 @@ class AudioPlayerService {
   }
 
   Future<void> init() async {
-    await _player.setAndroidAudioAttributes(const AndroidAudioAttributes(
-      contentType: AndroidAudioContentType.music,
-      usage: AndroidAudioUsage.media,
-    ));
+    final session = await AudioSession.instance;
+    await session.configure(const AudioSessionConfiguration.music());
   }
 
   void dispose() {
