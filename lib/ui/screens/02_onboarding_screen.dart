@@ -48,7 +48,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  _pages[_currentPage].color.withValues(alpha: (0.8)),
+                  _pages[_currentPage].color.withOpacity(0.8),
                   AppColors.defaultBackgroundDark,
                 ],
               ),

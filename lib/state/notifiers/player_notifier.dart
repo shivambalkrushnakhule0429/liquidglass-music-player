@@ -43,6 +43,17 @@ class PlayerNotifier extends _$PlayerNotifier {
            pbState = PlaybackState.completed;
            break;
        }
+
+       // Handle song change from queue
+       final currentIndex = ref.read(audioPlayerServiceProvider).currentIndex;
+       if (currentIndex != null && state.queue.isNotEmpty && currentIndex < state.queue.length) {
+         final currentSong = state.queue[currentIndex];
+         if (currentSong.id != state.currentSong?.id) {
+            state = state.copyWith(currentSong: currentSong, currentIndex: currentIndex);
+            _updateAccentColor(currentSong.id);
+         }
+       }
+
        state = state.copyWith(playbackState: pbState);
     });
 
@@ -56,12 +67,19 @@ class PlayerNotifier extends _$PlayerNotifier {
   }
 
   Future<void> playSong(SongModel song, {List<SongModel>? queue}) async {
-    state = state.copyWith(currentSong: song, queue: queue ?? [song], isLoading: true);
+    final songs = queue ?? [song];
+    final index = songs.indexWhere((s) => s.id == song.id);
 
-    // Extract accent color
+    state = state.copyWith(
+      currentSong: song,
+      queue: songs,
+      currentIndex: index >= 0 ? index : 0,
+      isLoading: true,
+    );
+
     _updateAccentColor(song.id);
 
-    await ref.read(audioPlayerServiceProvider).playSong(song);
+    await ref.read(audioPlayerServiceProvider).setQueue(songs, startIndex: state.currentIndex);
   }
 
   Future<void> _updateAccentColor(int songId) async {
@@ -82,7 +100,24 @@ class PlayerNotifier extends _$PlayerNotifier {
     await ref.read(audioPlayerServiceProvider).resume();
   }
 
+  Future<void> next() async {
+    await ref.read(audioPlayerServiceProvider).next();
+  }
+
+  Future<void> previous() async {
+    await ref.read(audioPlayerServiceProvider).previous();
+  }
+
   Future<void> seekTo(Duration position) async {
     await ref.read(audioPlayerServiceProvider).seekTo(position);
+  }
+
+  Future<void> setVolume(double volume) async {
+    state = state.copyWith(volume: volume);
+    await ref.read(audioPlayerServiceProvider).setVolume(volume);
+  }
+
+  Future<void> setSpeed(double speed) async {
+    await ref.read(audioPlayerServiceProvider).setSpeed(speed);
   }
 }

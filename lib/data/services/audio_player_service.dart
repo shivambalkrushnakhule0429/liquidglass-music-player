@@ -51,6 +51,9 @@ class AudioPlayerService {
   Future<void> next() async => await _player.seekToNext();
   Future<void> previous() async => await _player.seekToPrevious();
 
+  Future<void> setVolume(double volume) async => await _player.setVolume(volume);
+  Future<void> setSpeed(double speed) async => await _player.setSpeed(speed);
+
   Stream<Duration> get positionStream => _player.positionStream;
   Stream<Duration?> get durationStream => _player.durationStream;
   Stream<PlayerState> get playerStateStream => _player.playerStateStream;
@@ -59,4 +62,5 @@ class AudioPlayerService {
   Duration get position => _player.position;
   Duration? get duration => _player.duration;
   bool get isPlaying => _player.playing;
+  int? get currentIndex => _player.currentIndex;
 }

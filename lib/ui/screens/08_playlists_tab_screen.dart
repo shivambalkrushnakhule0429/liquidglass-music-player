@@ -73,7 +73,7 @@ class PlaylistsTabScreen extends ConsumerWidget {
       leading: GlassPanel(
         padding: EdgeInsets.zero,
         borderRadius: 8,
-        borderColor: color.withValues(alpha: (0.3)),
+        borderColor: color.withOpacity(0.3),
         child: Container(
           width: 48,
           height: 48,

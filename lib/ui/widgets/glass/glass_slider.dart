@@ -24,7 +24,7 @@ class GlassSlider extends StatelessWidget {
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
         activeTrackColor: AppColors.primaryAccent,
-        inactiveTrackColor: Colors.white.withValues(alpha: (0.1)),
+        inactiveTrackColor: Colors.white.withOpacity(0.1),
         thumbColor: Colors.white,
       ),
       child: Slider(

@@ -10,6 +10,7 @@ import '../../../state/notifiers/player_notifier.dart';
 import '../../../state/notifiers/player_state.dart';
 import '../widgets/glass/glass_panel.dart';
 import '../widgets/glass/glass_slider.dart';
+import '../screens/18_queue_screen.dart';
 
 class NowPlayingScreen extends ConsumerWidget {
   const NowPlayingScreen({super.key});
@@ -34,7 +35,7 @@ class NowPlayingScreen extends ConsumerWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  playerState.accentColor?.withValues(alpha: (0.4)) ??
+                  playerState.accentColor?.withOpacity(0.4) ??
                       AppColors.defaultBackgroundDark,
                   AppColors.defaultBackgroundDark,
                 ],
@@ -69,7 +70,14 @@ class NowPlayingScreen extends ConsumerWidget {
                           Icons.queue_music,
                           color: Colors.white,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            builder: (context) => const QueueScreen(),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -78,7 +86,7 @@ class NowPlayingScreen extends ConsumerWidget {
                   Hero(
                     tag: 'album_art_${song.id}',
                     child: GlassPanel(
-                      borderRadius: GlassConstants.radiusZero,
+                      borderRadius: GlassConstants.radiusLarge,
                       padding: EdgeInsets.zero,
                       width: Responsive.albumArtSize(
                         context,
@@ -88,9 +96,6 @@ class NowPlayingScreen extends ConsumerWidget {
                         context,
                         size: ArtSize.large,
                       ),
-                      borderColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      opacity: GlassConstants.opacityZero,
                       child: QueryArtworkWidget(
                         id: song.id,
                         type: ArtworkType.AUDIO,
@@ -154,7 +159,6 @@ class NowPlayingScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 32),
                   // Controls
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,7 +173,7 @@ class NowPlayingScreen extends ConsumerWidget {
                           color: Colors.white,
                           size: 48,
                         ),
-                        onPressed: () {},
+                        onPressed: () => ref.read(playerNotifierProvider.notifier).previous(),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -198,7 +202,7 @@ class NowPlayingScreen extends ConsumerWidget {
                           color: Colors.white,
                           size: 48,
                         ),
-                        onPressed: () {},
+                        onPressed: () => ref.read(playerNotifierProvider.notifier).next(),
                       ),
                       IconButton(
                         icon: const Icon(Icons.repeat, color: Colors.white60),
@@ -219,7 +223,7 @@ class NowPlayingScreen extends ConsumerWidget {
                         child: GlassSlider(
                           value: playerState.volume,
                           onChanged: (val) {
-                            // Volume control logic
+                            ref.read(playerNotifierProvider.notifier).setVolume(val);
                           },
                         ),
                       ),
@@ -235,10 +239,15 @@ class NowPlayingScreen extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildActionButton(context, Icons.timer, "Timer"),
-                      _buildActionButton(context, Icons.equalizer, "EQ"),
-                      _buildActionButton(context, Icons.share, "Share"),
-                      _buildActionButton(context, Icons.speed, "1.0x"),
+                      _buildActionButton(context, Icons.timer, "Timer", () => context.push('/sleep-timer')),
+                      _buildActionButton(context, Icons.equalizer, "EQ", () => context.push('/equalizer')),
+                      _buildActionButton(context, Icons.share, "Share", () {
+                         // Share logic could be a sheet too
+                      }),
+                      _buildActionButton(context, Icons.speed, "Speed", () {
+                         final currentSpeed = 1.0; // Mock current speed
+                         ref.read(playerNotifierProvider.notifier).setSpeed(1.5); // Cycle speeds
+                      }),
                     ],
                   ),
                   const Spacer(),
@@ -251,22 +260,25 @@ class NowPlayingScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionButton(BuildContext context, IconData icon, String label) {
-    return Column(
-      children: [
-        GlassPanel(
-          borderRadius: 12,
-          padding: const EdgeInsets.all(8),
-          child: Icon(icon, color: Colors.white, size: 20),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: AppTypography.labelSmall(
-            context,
-          ).copyWith(color: Colors.white60),
-        ),
-      ],
+  Widget _buildActionButton(BuildContext context, IconData icon, String label, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          GlassPanel(
+            borderRadius: 12,
+            padding: const EdgeInsets.all(8),
+            child: Icon(icon, color: Colors.white, size: 20),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: AppTypography.labelSmall(
+              context,
+            ).copyWith(color: Colors.white60),
+          ),
+        ],
+      ),
     );
   }
 

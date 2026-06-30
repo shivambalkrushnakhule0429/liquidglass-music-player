@@ -59,7 +59,7 @@ class GlassPanel extends StatelessWidget {
           BoxShadow(
             blurRadius: GlassConstants.shadowBlur,
             offset: const Offset(0, GlassConstants.shadowOffset),
-            color: Colors.black.withValues(alpha: (0.1)),
+            color: Colors.black.withOpacity(0.1),
           )
         ] : null,
       ),
@@ -80,8 +80,8 @@ class GlassPanel extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  effectiveHighlightColor.withValues(alpha: (opacity)),
-                  Colors.white.withValues(alpha: (opacity * 0.5)),
+                  effectiveHighlightColor.withOpacity(opacity),
+                  Colors.white.withOpacity(opacity * 0.5),
                 ],
               ),
             ),
