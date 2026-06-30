@@ -16,8 +16,8 @@ class GlassSwitch extends StatelessWidget {
     return Switch(
       value: value,
       onChanged: onChanged,
-      activeColor: AppColors.primaryAccent,
-      activeTrackColor: AppColors.primaryAccent.withOpacity(0.5),
+      activeThumbColor: AppColors.primaryAccent,
+      activeTrackColor: AppColors.primaryAccent.withValues(alpha: (0.5)),
     );
   }
 }

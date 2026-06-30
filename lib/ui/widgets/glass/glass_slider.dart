@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
-import 'glass_panel.dart';
 
 class GlassSlider extends StatelessWidget {
   final double value;
@@ -20,11 +19,12 @@ class GlassSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
+        padding: EdgeInsets.zero,
         trackHeight: 4,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
         activeTrackColor: AppColors.primaryAccent,
-        inactiveTrackColor: Colors.white.withOpacity(0.1),
+        inactiveTrackColor: Colors.white.withValues(alpha: (0.1)),
         thumbColor: Colors.white,
       ),
       child: Slider(

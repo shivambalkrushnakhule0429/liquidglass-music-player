@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:liquidglass_music_player/core/constants/glass_constants.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
@@ -33,7 +34,8 @@ class NowPlayingScreen extends ConsumerWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  playerState.accentColor?.withOpacity(0.4) ?? AppColors.defaultBackgroundDark,
+                  playerState.accentColor?.withValues(alpha: (0.4)) ??
+                      AppColors.defaultBackgroundDark,
                   AppColors.defaultBackgroundDark,
                 ],
               ),
@@ -49,15 +51,24 @@ class NowPlayingScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 32),
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.white,
+                          size: 32,
+                        ),
                         onPressed: () => context.pop(),
                       ),
                       Text(
                         "NOW PLAYING",
-                        style: AppTypography.labelMedium(context).copyWith(color: Colors.white70, letterSpacing: 2),
+                        style: AppTypography.labelMedium(
+                          context,
+                        ).copyWith(color: Colors.white70, letterSpacing: 2),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.queue_music, color: Colors.white),
+                        icon: const Icon(
+                          Icons.queue_music,
+                          color: Colors.white,
+                        ),
                         onPressed: () {},
                       ),
                     ],
@@ -67,17 +78,30 @@ class NowPlayingScreen extends ConsumerWidget {
                   Hero(
                     tag: 'album_art_${song.id}',
                     child: GlassPanel(
-                      borderRadius: 24,
+                      borderRadius: GlassConstants.radiusZero,
                       padding: EdgeInsets.zero,
-                      width: Responsive.albumArtSize(context, size: ArtSize.large),
-                      height: Responsive.albumArtSize(context, size: ArtSize.large),
+                      width: Responsive.albumArtSize(
+                        context,
+                        size: ArtSize.large,
+                      ),
+                      height: Responsive.albumArtSize(
+                        context,
+                        size: ArtSize.large,
+                      ),
+                      borderColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      opacity: GlassConstants.opacityZero,
                       child: QueryArtworkWidget(
                         id: song.id,
                         type: ArtworkType.AUDIO,
                         artworkWidth: double.infinity,
                         artworkHeight: double.infinity,
                         nullArtworkWidget: const Center(
-                          child: Icon(Icons.music_note, size: 100, color: Colors.white24),
+                          child: Icon(
+                            Icons.music_note,
+                            size: 100,
+                            color: Colors.white24,
+                          ),
                         ),
                       ),
                     ),
@@ -86,16 +110,20 @@ class NowPlayingScreen extends ConsumerWidget {
                   // Song Info
                   Text(
                     song.title,
-                    style: AppTypography.displaySmall(context).copyWith(color: Colors.white),
+                    style: AppTypography.displaySmall(
+                      context,
+                    ).copyWith(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     song.artist,
-                    style: AppTypography.bodyMedium(context).copyWith(color: Colors.white70),
+                    style: AppTypography.bodyMedium(
+                      context,
+                    ).copyWith(color: Colors.white70),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   // Seek Bar
                   GlassSlider(
                     value: playerState.position.inMilliseconds.toDouble(),
@@ -103,29 +131,50 @@ class NowPlayingScreen extends ConsumerWidget {
                         ? playerState.duration.inMilliseconds.toDouble()
                         : 1.0,
                     onChanged: (val) {
-                      ref.read(playerNotifierProvider.notifier).seekTo(Duration(milliseconds: val.toInt()));
+                      ref
+                          .read(playerNotifierProvider.notifier)
+                          .seekTo(Duration(milliseconds: val.toInt()));
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(_formatDuration(playerState.position), style: AppTypography.labelSmall(context).copyWith(color: Colors.white60)),
-                        Text(_formatDuration(playerState.duration), style: AppTypography.labelSmall(context).copyWith(color: Colors.white60)),
-                      ],
-                    ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _formatDuration(playerState.position),
+                        style: AppTypography.labelSmall(
+                          context,
+                        ).copyWith(color: Colors.white60),
+                      ),
+                      Text(
+                        _formatDuration(playerState.duration),
+                        style: AppTypography.labelSmall(
+                          context,
+                        ).copyWith(color: Colors.white60),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 32),
+                  // const SizedBox(height: 32),
                   // Controls
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(icon: const Icon(Icons.shuffle, color: Colors.white60), onPressed: () {}),
-                      IconButton(icon: const Icon(Icons.skip_previous, color: Colors.white, size: 48), onPressed: () {}),
+                      IconButton(
+                        icon: const Icon(Icons.shuffle, color: Colors.white60),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.skip_previous,
+                          color: Colors.white,
+                          size: 48,
+                        ),
+                        onPressed: () {},
+                      ),
                       GestureDetector(
                         onTap: () {
-                          if (playerState.playbackState == PlaybackState.playing) {
+                          if (playerState.playbackState ==
+                              PlaybackState.playing) {
                             ref.read(playerNotifierProvider.notifier).pause();
                           } else {
                             ref.read(playerNotifierProvider.notifier).resume();
@@ -135,33 +184,53 @@ class NowPlayingScreen extends ConsumerWidget {
                           borderRadius: 100,
                           padding: const EdgeInsets.all(20),
                           child: Icon(
-                            playerState.playbackState == PlaybackState.playing ? Icons.pause : Icons.play_arrow,
+                            playerState.playbackState == PlaybackState.playing
+                                ? Icons.pause
+                                : Icons.play_arrow,
                             color: Colors.white,
                             size: 32,
                           ),
                         ),
                       ),
-                      IconButton(icon: const Icon(Icons.skip_next, color: Colors.white, size: 48), onPressed: () {}),
-                      IconButton(icon: const Icon(Icons.repeat, color: Colors.white60), onPressed: () {}),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.skip_next,
+                          color: Colors.white,
+                          size: 48,
+                        ),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.repeat, color: Colors.white60),
+                        onPressed: () {},
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                   // Volume Slider
                   Row(
                     children: [
-                      const Icon(Icons.volume_down, color: Colors.white60, size: 20),
+                      const Icon(
+                        Icons.volume_down,
+                        color: Colors.white60,
+                        size: 20,
+                      ),
                       Expanded(
                         child: GlassSlider(
                           value: playerState.volume,
                           onChanged: (val) {
-                             // Volume control logic
+                            // Volume control logic
                           },
                         ),
                       ),
-                      const Icon(Icons.volume_up, color: Colors.white60, size: 20),
+                      const Icon(
+                        Icons.volume_up,
+                        color: Colors.white60,
+                        size: 20,
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 14),
                   // Action Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -191,7 +260,12 @@ class NowPlayingScreen extends ConsumerWidget {
           child: Icon(icon, color: Colors.white, size: 20),
         ),
         const SizedBox(height: 4),
-        Text(label, style: AppTypography.labelSmall(context).copyWith(color: Colors.white60)),
+        Text(
+          label,
+          style: AppTypography.labelSmall(
+            context,
+          ).copyWith(color: Colors.white60),
+        ),
       ],
     );
   }

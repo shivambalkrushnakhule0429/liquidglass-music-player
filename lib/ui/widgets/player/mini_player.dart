@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/utils/responsive_helpers.dart';
 import '../../../core/constants/app_typography.dart';
 import '../../../core/constants/app_colors.dart';
@@ -26,13 +27,18 @@ class MiniPlayer extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                width: height - 20,
-                height: height - 20,
-                color: Colors.white10,
-                child: const Icon(Icons.music_note, color: Colors.white70),
+            GestureDetector(
+              onTap: () {
+                context.push('/now-playing');
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  width: height - 20,
+                  height: height - 20,
+                  color: Colors.white10,
+                  child: const Icon(Icons.music_note, color: Colors.white70),
+                ),
               ),
             ),
             const SizedBox(width: 12),
