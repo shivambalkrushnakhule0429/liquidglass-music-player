@@ -25,14 +25,17 @@ class PlayerNotifier extends _$PlayerNotifier {
       }
     });
 
-    // Index listener for auto-updates
+    // Index listener for auto-updates - ESSENTIAL FIX for song content change
     final indexSub = playerService.currentIndexStream.listen((index) {
        if (index != null && state.queue.isNotEmpty && index < state.queue.length) {
          final currentSong = state.queue[index];
-         if (currentSong.id != state.currentSong?.id) {
-            state = state.copyWith(currentSong: currentSong, currentIndex: index);
-            _updateAccentColor(currentSong.id);
-         }
+         // Force update state with new song info
+         state = state.copyWith(
+           currentSong: currentSong,
+           currentIndex: index,
+           accentColor: null, // Reset and let it reload
+         );
+         _updateAccentColor(currentSong.id);
        }
     });
 

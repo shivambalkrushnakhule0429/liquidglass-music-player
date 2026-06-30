@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../data/models/equalizer_preset.dart';
 import '../../di/providers.dart';
 
 part 'equalizer_notifier.g.dart';
@@ -11,10 +10,14 @@ class EqualizerNotifier extends _$EqualizerNotifier {
     return const EqualizerState();
   }
 
-  void setBandLevel(int index, double level) {
+  Future<void> setBandLevel(int index, double level) async {
     final newLevels = List<double>.from(state.bandLevels);
     newLevels[index] = level;
     state = state.copyWith(bandLevels: newLevels);
+
+    // level is 0.0 to 1.0, map to -10dB to +10dB gain
+    final gain = (level - 0.5) * 20.0;
+    await ref.read(audioPlayerServiceProvider).setEqualizerBand(index, gain);
   }
 
   void setBassBoost(double level) {

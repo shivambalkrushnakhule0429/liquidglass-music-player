@@ -15,17 +15,16 @@ subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
-subprojects {
-    project.evaluationDependsOn(":app")
-}
 
 subprojects {
-    afterEvaluate {
-        if (project.hasProperty("android")) {
-            val android = project.extensions.getByName("android") as? com.android.build.gradle.BaseExtension
-            android?.let {
-                if (it.namespace == null) {
-                    it.namespace = "com.aura.music.${project.name.replace(":", ".").replace("-", ".")}"
+    if (project.name != "app") {
+        project.afterEvaluate {
+            if (project.hasProperty("android")) {
+                val android = project.extensions.findByName("android") as? com.android.build.gradle.BaseExtension
+                android?.let {
+                    if (it.namespace == null) {
+                        it.namespace = "com.aura.music.${project.name.replace(":", ".").replace("-", ".")}"
+                    }
                 }
             }
         }

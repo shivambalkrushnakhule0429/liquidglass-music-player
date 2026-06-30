@@ -3,10 +3,24 @@ import 'package:just_audio_background/just_audio_background.dart';
 import '../models/song_model.dart';
 
 class AudioPlayerService {
-  final AudioPlayer _player = AudioPlayer();
+  late final AudioPlayer _player;
+  final AndroidEqualizer _equalizer = AndroidEqualizer();
+
+  AudioPlayerService() {
+    _player = AudioPlayer(
+      audioPipeline: AudioPipeline(
+        androidAudioEffects: [
+          _equalizer,
+        ],
+      ),
+    );
+  }
 
   Future<void> init() async {
-    // Initial setup if needed
+    await _player.setAndroidAudioAttributes(const AndroidAudioAttributes(
+      contentType: AndroidAudioContentType.music,
+      usage: AndroidAudioUsage.media,
+    ));
   }
 
   void dispose() {
@@ -40,7 +54,7 @@ class AudioPlayerService {
         ),
       )).toList(),
     );
-    await _player.setAudioSource(playlist, initialIndex: startIndex);
+    await _player.setAudioSource(playlist, initialIndex: startIndex, preload: true);
     await _player.play();
   }
 
@@ -53,6 +67,16 @@ class AudioPlayerService {
 
   Future<void> setVolume(double volume) async => await _player.setVolume(volume);
   Future<void> setSpeed(double speed) async => await _player.setSpeed(speed);
+
+  // EQ Controls
+  AndroidEqualizer get equalizer => _equalizer;
+
+  Future<void> setEqualizerBand(int bandIndex, double gain) async {
+    final bands = await _equalizer.parameters;
+    if (bandIndex < bands.bands.length) {
+       await bands.bands[bandIndex].setGain(gain);
+    }
+  }
 
   Stream<Duration> get positionStream => _player.positionStream;
   Stream<Duration?> get durationStream => _player.durationStream;
