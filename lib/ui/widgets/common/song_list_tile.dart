@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query/on_audio_query.dart' hide SongModel;
 import '../../../core/constants/app_typography.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/glass_constants.dart';
@@ -29,7 +29,7 @@ class SongListTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         borderRadius: GlassConstants.radiusMedium,
         opacity: isPlaying ? GlassConstants.opacityStrong : GlassConstants.opacityLight,
-        borderColor: isPlaying ? AppColors.primaryAccent.withOpacity(0.5) : null,
+        borderColor: isPlaying ? AppColors.primaryAccent.withValues(alpha: (0.5)) : null,
         child: Row(
           children: [
             ClipRRect(
@@ -40,7 +40,7 @@ class SongListTile extends StatelessWidget {
                 nullArtworkWidget: Container(
                   width: 48,
                   height: 48,
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: (0.1)),
                   child: isPlaying
                     ? const Icon(Icons.equalizer, color: AppColors.primaryAccent)
                     : const Icon(Icons.music_note, color: Colors.white70),

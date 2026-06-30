@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/glass_constants.dart';
 import '../../../data/models/song_model.dart';
 import '../widgets/glass/glass_panel.dart';

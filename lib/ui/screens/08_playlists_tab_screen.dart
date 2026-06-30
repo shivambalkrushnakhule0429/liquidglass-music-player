@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/constants/app_colors.dart';
+import 'package:liquidglass_music_player/state/providers/playlist_provider.dart';
 import '../../core/constants/app_typography.dart';
-import '../../di/providers.dart';
 import '../widgets/glass/glass_panel.dart';
 
 class PlaylistsTabScreen extends ConsumerWidget {
@@ -74,7 +73,7 @@ class PlaylistsTabScreen extends ConsumerWidget {
       leading: GlassPanel(
         padding: EdgeInsets.zero,
         borderRadius: 8,
-        borderColor: color.withOpacity(0.3),
+        borderColor: color.withValues(alpha: (0.3)),
         child: Container(
           width: 48,
           height: 48,

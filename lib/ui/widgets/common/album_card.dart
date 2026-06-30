@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:on_audio_query/on_audio_query.dart' hide AlbumModel;
 import '../../../core/constants/app_typography.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/utils/responsive_helpers.dart';

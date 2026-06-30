@@ -8,6 +8,7 @@ class GlassConstants {
   static const double blurUltra = 60.0;    // Overlay dialogs
 
   // Opacity levels
+  static const double opacityZero = 0;        // Completely Zero
   static const double opacitySubtle = 0.05;   // Barely visible glass
   static const double opacityLight = 0.10;    // Light glass panels
   static const double opacityMedium = 0.15;   // Standard glass cards
@@ -25,6 +26,7 @@ class GlassConstants {
   static const Color darkHighlight = Color(0x10FFFFFF);     // 6% white
 
   // Border radius scale
+  static const double radiusZero = 0;
   static const double radiusSmall = 8.0;
   static const double radiusMedium = 16.0;
   static const double radiusLarge = 24.0;
