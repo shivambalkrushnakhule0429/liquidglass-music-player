@@ -23,7 +23,7 @@ mixin _$PlayerState {
   Duration get duration => throw _privateConstructorUsedError;
   PlaybackState get playbackState => throw _privateConstructorUsedError;
   bool get shuffleEnabled => throw _privateConstructorUsedError;
-  RepeatMode get repeatMode => throw _privateConstructorUsedError;
+  ja.LoopMode get repeatMode => throw _privateConstructorUsedError;
   double get volume => throw _privateConstructorUsedError;
   double get previousVolume => throw _privateConstructorUsedError;
   bool get isMuted => throw _privateConstructorUsedError;
@@ -52,7 +52,7 @@ abstract class $PlayerStateCopyWith<$Res> {
       Duration duration,
       PlaybackState playbackState,
       bool shuffleEnabled,
-      RepeatMode repeatMode,
+      ja.LoopMode repeatMode,
       double volume,
       double previousVolume,
       bool isMuted,
@@ -127,7 +127,7 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
       repeatMode: null == repeatMode
           ? _value.repeatMode
           : repeatMode // ignore: cast_nullable_to_non_nullable
-              as RepeatMode,
+              as ja.LoopMode,
       volume: null == volume
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
@@ -192,7 +192,7 @@ abstract class _$$PlayerStateImplCopyWith<$Res>
       Duration duration,
       PlaybackState playbackState,
       bool shuffleEnabled,
-      RepeatMode repeatMode,
+      ja.LoopMode repeatMode,
       double volume,
       double previousVolume,
       bool isMuted,
@@ -266,7 +266,7 @@ class __$$PlayerStateImplCopyWithImpl<$Res>
       repeatMode: null == repeatMode
           ? _value.repeatMode
           : repeatMode // ignore: cast_nullable_to_non_nullable
-              as RepeatMode,
+              as ja.LoopMode,
       volume: null == volume
           ? _value.volume
           : volume // ignore: cast_nullable_to_non_nullable
@@ -314,7 +314,7 @@ class _$PlayerStateImpl implements _PlayerState {
       this.duration = Duration.zero,
       this.playbackState = PlaybackState.idle,
       this.shuffleEnabled = false,
-      this.repeatMode = RepeatMode.off,
+      this.repeatMode = ja.LoopMode.off,
       this.volume = 1.0,
       this.previousVolume = 1.0,
       this.isMuted = false,
@@ -353,7 +353,7 @@ class _$PlayerStateImpl implements _PlayerState {
   final bool shuffleEnabled;
   @override
   @JsonKey()
-  final RepeatMode repeatMode;
+  final ja.LoopMode repeatMode;
   @override
   @JsonKey()
   final double volume;
@@ -452,7 +452,7 @@ abstract class _PlayerState implements PlayerState {
       final Duration duration,
       final PlaybackState playbackState,
       final bool shuffleEnabled,
-      final RepeatMode repeatMode,
+      final ja.LoopMode repeatMode,
       final double volume,
       final double previousVolume,
       final bool isMuted,
@@ -477,7 +477,7 @@ abstract class _PlayerState implements PlayerState {
   @override
   bool get shuffleEnabled;
   @override
-  RepeatMode get repeatMode;
+  ja.LoopMode get repeatMode;
   @override
   double get volume;
   @override

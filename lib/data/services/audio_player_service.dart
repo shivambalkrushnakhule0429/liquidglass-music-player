@@ -66,6 +66,8 @@ class AudioPlayerService {
 
   Future<void> setVolume(double volume) async => await _player.setVolume(volume);
   Future<void> setSpeed(double speed) async => await _player.setSpeed(speed);
+  Future<void> setShuffleMode(bool enabled) async => await _player.setShuffleModeEnabled(enabled);
+  Future<void> setRepeatMode(LoopMode mode) async => await _player.setLoopMode(mode);
 
   // EQ Controls
   AndroidEqualizer get equalizer => _equalizer;

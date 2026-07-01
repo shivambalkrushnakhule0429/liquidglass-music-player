@@ -6,7 +6,7 @@ part of 'equalizer_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$equalizerNotifierHash() => r'd7d0398e76e8f6d3de44fe971c2e3eef0191a0e8';
+String _$equalizerNotifierHash() => r'101bfa1fb652caf24e925cdf922c7e814658d363';
 
 /// See also [EqualizerNotifier].
 @ProviderFor(EqualizerNotifier)

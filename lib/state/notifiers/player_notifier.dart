@@ -25,15 +25,14 @@ class PlayerNotifier extends _$PlayerNotifier {
       }
     });
 
-    // Index listener for auto-updates - ESSENTIAL FIX for song content change
+    // Index listener for auto-updates
     final indexSub = playerService.currentIndexStream.listen((index) {
        if (index != null && state.queue.isNotEmpty && index < state.queue.length) {
          final currentSong = state.queue[index];
-         // Force update state with new song info
          state = state.copyWith(
            currentSong: currentSong,
            currentIndex: index,
-           accentColor: null, // Reset and let it reload
+           accentColor: null,
          );
          _updateAccentColor(currentSong.id);
        }
@@ -135,5 +134,28 @@ class PlayerNotifier extends _$PlayerNotifier {
   Future<void> setSpeed(double speed) async {
     state = state.copyWith(speed: speed);
     await ref.read(audioPlayerServiceProvider).setSpeed(speed);
+  }
+
+  Future<void> toggleShuffle() async {
+    final enabled = !state.shuffleEnabled;
+    state = state.copyWith(shuffleEnabled: enabled);
+    await ref.read(audioPlayerServiceProvider).setShuffleMode(enabled);
+  }
+
+  Future<void> cycleRepeatMode() async {
+    ja.LoopMode nextMode;
+    switch (state.repeatMode) {
+      case ja.LoopMode.off:
+        nextMode = ja.LoopMode.all;
+        break;
+      case ja.LoopMode.all:
+        nextMode = ja.LoopMode.one;
+        break;
+      case ja.LoopMode.one:
+        nextMode = ja.LoopMode.off;
+        break;
+    }
+    state = state.copyWith(repeatMode: nextMode);
+    await ref.read(audioPlayerServiceProvider).setRepeatMode(nextMode);
   }
 }

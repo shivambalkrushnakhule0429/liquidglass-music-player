@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:liquidglass_music_player/core/constants/glass_constants.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:just_audio/just_audio.dart' as ja;
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/responsive_helpers.dart';
@@ -132,7 +133,7 @@ class NowPlayingScreen extends ConsumerWidget {
                   const SizedBox(height: 16),
                   // Seek Bar
                   GlassSlider(
-                    value: playerState.position.inMilliseconds.toDouble(),
+                    value: playerState.position.inMilliseconds.toDouble().clamp(0, playerState.duration.inMilliseconds.toDouble()),
                     max: playerState.duration.inMilliseconds.toDouble() > 0
                         ? playerState.duration.inMilliseconds.toDouble()
                         : 1.0,
@@ -165,8 +166,11 @@ class NowPlayingScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.shuffle, color: Colors.white60),
-                        onPressed: () {},
+                        icon: Icon(
+                          Icons.shuffle,
+                          color: playerState.shuffleEnabled ? AppColors.primaryAccent : Colors.white60
+                        ),
+                        onPressed: () => ref.read(playerNotifierProvider.notifier).toggleShuffle(),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -206,8 +210,11 @@ class NowPlayingScreen extends ConsumerWidget {
                         onPressed: () => ref.read(playerNotifierProvider.notifier).next(),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.repeat, color: Colors.white60),
-                        onPressed: () {},
+                        icon: Icon(
+                          playerState.repeatMode == ja.LoopMode.one ? Icons.repeat_one : Icons.repeat,
+                          color: playerState.repeatMode != ja.LoopMode.off ? AppColors.primaryAccent : Colors.white60
+                        ),
+                        onPressed: () => ref.read(playerNotifierProvider.notifier).cycleRepeatMode(),
                       ),
                     ],
                   ),

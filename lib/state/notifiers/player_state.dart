@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart' as ja;
 import '../../data/models/song_model.dart';
 
 part 'player_state.freezed.dart';
@@ -14,7 +15,7 @@ class PlayerState with _$PlayerState {
     @Default(Duration.zero) Duration duration,
     @Default(PlaybackState.idle) PlaybackState playbackState,
     @Default(false) bool shuffleEnabled,
-    @Default(RepeatMode.off) RepeatMode repeatMode,
+    @Default(ja.LoopMode.off) ja.LoopMode repeatMode,
     @Default(1.0) double volume,
     @Default(1.0) double previousVolume,
     @Default(false) bool isMuted,
@@ -29,4 +30,3 @@ class PlayerState with _$PlayerState {
 }
 
 enum PlaybackState { idle, loading, playing, paused, completed, error }
-enum RepeatMode { off, all, one }
